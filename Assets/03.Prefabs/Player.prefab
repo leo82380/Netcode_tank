@@ -102,6 +102,7 @@ GameObject:
   - component: {fileID: 1224054294923286072}
   - component: {fileID: -7374898485662794938}
   - component: {fileID: 1563726270254630296}
+  - component: {fileID: 5142211148371593633}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -310,6 +311,20 @@ MonoBehaviour:
   currentHealth:
     m_InternalValue: 0
   maxHealth: 100
+--- !u!114 &5142211148371593633
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3014370111607584142}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6f431cdfa7a0b84b9bba5d0f96eea5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  totalCoin:
+    m_InternalValue: 0
 --- !u!1 &3626891131438900462
 GameObject:
   m_ObjectHideFlags: 0
