@@ -41,19 +41,30 @@ public class ReSpawnCoin : Coin
         base.OnNetworkSpawn();
         _prevPos = transform.position;
 
-        if(IsClient)
-            isActive.OnValueChanged += HandleActiveValueChanged;
+        // if(IsClient)
+        //     isActive.OnValueChanged += HandleActiveValueChanged;
     }
 
     public override void OnNetworkDespawn()
     {
         base.OnNetworkDespawn();
-        if(IsClient)
-            isActive.OnValueChanged -= HandleActiveValueChanged;
+        // if(IsClient)
+        //     isActive.OnValueChanged -= HandleActiveValueChanged;
     }
 
-    private void HandleActiveValueChanged(bool previousValue, bool newValue)
+    // private void HandleActiveValueChanged(bool previousValue, bool newValue)
+    // {
+    //     SetVisible(newValue);
+    // }
+
+    private void Update()
     {
-        SetVisible(newValue);
+        if (IsServer) return;
+
+        if (Vector2.Distance(_prevPos, transform.position) > 0.1f)
+        {
+            _prevPos = transform.position;
+            SetVisible(true);
+        }
     }
 }
