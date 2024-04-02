@@ -29,9 +29,16 @@ public class ApplicationController : MonoBehaviour
             hostSingleton.CreateHost();
             
             ClientSingleton clientSingleton = Instantiate(_clientPrefab, transform);
-            await clientSingleton.CreateClient();
-            
-            ClientSingleton.Instance.GameManager.GotoMenuScene();
+            bool authenticated = await clientSingleton.CreateClient();
+
+            if (authenticated)
+            {
+                ClientSingleton.Instance.GameManager.GotoMenuScene();
+            }
+            else
+            {
+                Debug.LogError("UGS Service login failed.");
+            }
         }
     }
 }

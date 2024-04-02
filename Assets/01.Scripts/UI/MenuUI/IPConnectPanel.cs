@@ -17,7 +17,7 @@ public class IPConnectPanel : MonoBehaviour
 
     private void Awake()
     {
-        _hostBtn.onClick.AddListener(HandleHostBrnClick);
+        _hostBtn.onClick.AddListener(HandleHostBtnClick);
         _clientBtn.onClick.AddListener(HandleClientBtnClick);
 
         _ipText.text = FindIPAddress();
@@ -27,9 +27,15 @@ public class IPConnectPanel : MonoBehaviour
             NetworkManager.Singleton.OnClientDisconnectCallback += HandleClientDisconnect;
     }
 
+    private void OnDestroy()
+    {
+        if (NetworkManager.Singleton == null) return;
+        NetworkManager.Singleton.OnClientDisconnectCallback -= HandleClientDisconnect;
+    }
+
     private void HandleClientDisconnect(ulong clientId)
     {
-        
+        Debug.Log(clientId + ", 에러 발생");
     }
 
     private string FindIPAddress()
@@ -47,25 +53,19 @@ public class IPConnectPanel : MonoBehaviour
         return null;
     }
 
-    private void HandleHostBrnClick()
+    private void HandleHostBtnClick()
     {
         bool checker = SetupNetworkPassport();
         
         if (checker == false) return;
 
-        if (NetworkManager.Singleton.StartHost())
-        {
-            NetworkManager.Singleton.SceneManager.LoadScene(
-                SceneNames.GameScene, LoadSceneMode.Single);
-        }
-        else
-        {
-            NetworkManager.Singleton.Shutdown();
-        }
+        HostSingleton.Instance.GameManager.StartHostLocalNetwork();
     }
     
     private void HandleClientBtnClick()
     {
+        if (SetupNetworkPassport() == false) return;
+        ClientSingleton.Instance.GameManager.StartClientLocalNetwork();
     }
 
     private bool SetupNetworkPassport()

@@ -6,7 +6,7 @@ public class HostSingleton : MonoBehaviour
 {
     private static HostSingleton _instance;
     
-    public HostSingleton Instance
+    public static HostSingleton Instance
     {
         get
         {
