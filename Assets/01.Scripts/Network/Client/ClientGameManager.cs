@@ -12,6 +12,8 @@ using UnityEngine.SceneManagement;
 public class ClientGameManager
 {
     private JoinAllocation _allocation;
+    private string _playerName;
+    public string PlayerName => _playerName;
     
     public async Task<bool> InitAsync()
     {
@@ -43,7 +45,7 @@ public class ClientGameManager
 
             var relayServerData = new RelayServerData(_allocation, "dtls");
             transport.SetRelayServerData(relayServerData);
-
+            
             NetworkManager.Singleton.StartClient();
         }
         catch (Exception e)
@@ -61,5 +63,10 @@ public class ClientGameManager
             return false;
         }
         return true;
+    }
+
+    public void SetPlayerName(string playerName)
+    {
+        _playerName = playerName;
     }
 }
