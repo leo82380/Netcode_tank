@@ -12,12 +12,19 @@ using Unity.Services.Relay.Models;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class HostGameManager
+public class HostGameManager : IDisposable
 {
     private Allocation _allocation;
     private const int _maxConnections = 8;
     private string _joinCode;
     private string _lobbyId; // 내가 게임 만들고, 로비를 만들건데 그 아이디
+    
+    public NetworkServer NetServer { get; private set; }
+
+    private void MakeNetworkserver()
+    {
+        NetServer = new NetworkServer(NetworkManager.Singleton);
+    }
     
     public string JoinCode => _joinCode;
 
@@ -63,9 +70,11 @@ public class HostGameManager
                     new DataObject(DataObject.VisibilityOptions.Member, _joinCode)
                 }
             };
+            
+            string playerName = ClientSingleton.Instance.GameManager.PlayerName;
 
             Lobby lobby = await Lobbies.Instance.CreateLobbyAsync
-                ("Dummy", _maxConnections, lobbyOption);
+                ($"{playerName}'s Lobby", _maxConnections, lobbyOption);
 
             _lobbyId = lobby.Id; // 로비 아이디 저장
 
@@ -76,6 +85,10 @@ public class HostGameManager
             Debug.LogError(ex);
             return;
         }
+        
+        MakeNetworkserver();
+        
+        ClientSingleton.Instance.GameManager.SetPayloadData();
         
         if (NetworkManager.Singleton.StartHost())
         {
@@ -96,6 +109,8 @@ public class HostGameManager
 
     public bool StartHostLocalNetwork()
     {
+        MakeNetworkserver();
+        ClientSingleton.Instance.GameManager.SetPayloadData();
         if (NetworkManager.Singleton.StartHost())
         {
             NetworkManager.Singleton.SceneManager.LoadScene(
@@ -109,4 +124,28 @@ public class HostGameManager
         }
     }
 
+    public void Dispose()
+    {
+        Shutdown();
+    }
+
+    private async Task Shutdown()
+    {
+        HostSingleton.Instance.StopAllCoroutines();
+        
+        if(!string.IsNullOrEmpty(_lobbyId))
+        {
+            try
+            {
+                await Lobbies.Instance.DeleteLobbyAsync(_lobbyId);
+            }
+            catch (LobbyServiceException ex)
+            {
+                Debug.LogError(ex);
+            }
+        }
+        
+        _lobbyId = string.Empty;
+        NetServer?.Dispose();
+    }
 }
