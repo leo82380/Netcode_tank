@@ -19,8 +19,8 @@ public class LoginPanelUI : MonoBehaviour
 
     private void ValidateUsername(string name)
     {
-        // 영문 또는 숫자로 띄어쓰기 없이 3~7글자로 입력하면 성공
-        Regex regex = new Regex("^[a-zA-Z0-9]{3,7}$");
+        // 영문 또는 숫자로 띄어쓰기 없이 3~5글자로 입력하면 성공
+        Regex regex = new Regex("^[a-zA-Z0-9]{3,5}$");
         bool success = regex.IsMatch(name);
         _btnLogin.interactable = success;
     }
