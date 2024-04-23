@@ -23,6 +23,7 @@ public class PlayerController : NetworkBehaviour
     public PlayerVisual VisualCompo { get; private set; }
     public PlayerMovement MovementCompo { get; private set; }
     public Health HealthCompo { get; private set; }
+    public CoinCollector CoinCompo { get; private set; }
     
     public NetworkVariable<FixedString32Bytes> playerName;
 
@@ -34,6 +35,7 @@ public class PlayerController : NetworkBehaviour
         VisualCompo = GetComponent<PlayerVisual>();
         MovementCompo = GetComponent<PlayerMovement>();
         HealthCompo = GetComponent<Health>();
+        CoinCompo = GetComponent<CoinCollector>();
     }
 
     public override void OnNetworkSpawn()
@@ -51,10 +53,8 @@ public class PlayerController : NetworkBehaviour
             UserData data = 
                 HostSingleton.Instance.GameManager.NetServer.GetUserDataByClientID(OwnerClientId);
             playerName.Value = data.username;
-            
-            
-            OnPlayerSpawn?.Invoke(this);
         }
+        OnPlayerSpawn?.Invoke(this);
         HandlePlayerNameChanged(string.Empty, playerName.Value);
     }
 
@@ -69,10 +69,7 @@ public class PlayerController : NetworkBehaviour
         tankColor.OnValueChanged -= HandleColorChanged;
         playerName.OnValueChanged -= HandlePlayerNameChanged;
         
-        if (IsServer)
-        {
-            OnPlayerDespawn?.Invoke(this);
-        }
+        OnPlayerDespawn?.Invoke(this);
     }
     
     private void HandleColorChanged(Color previousvalue, Color newvalue)
@@ -81,7 +78,7 @@ public class PlayerController : NetworkBehaviour
     }
 
     #region Only Server excution area
-    public void SetTankColor(Color color)
+    public void SetTankData(Color color, int coin)
     {
         tankColor.Value = color;
     }

@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class RespawnManager : NetworkBehaviour
 {
+    [SerializeField] private float _keepCoinRatio = 0.8f;
     public override void OnNetworkSpawn()
     {
         if (!IsServer) return;
@@ -34,10 +35,13 @@ public class RespawnManager : NetworkBehaviour
         {
             ulong clientID = player.OwnerClientId;
             Color color = player.tankColor.Value;
+
+            int remainCoin = Mathf.FloorToInt(
+                player.CoinCompo.totalCoin.Value * _keepCoinRatio);
             
             Destroy(player.gameObject);
             
-            GameManager.Instance.SpawnTank(clientID, color, 10f);
+            GameManager.Instance.SpawnTank(clientID, color, remainCoin, 10f);
         };
     }
     
