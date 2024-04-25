@@ -18,7 +18,7 @@ public abstract class Coin : NetworkBehaviour
 
     public abstract int Collect();
 
-    protected void Awake()
+    protected virtual void Awake()
     {
         isActive = new NetworkVariable<bool>();
         _spriteRenderer = GetComponent<SpriteRenderer>();

@@ -9,6 +9,7 @@ public class CoinCollector : NetworkBehaviour
     [Header("Reference Variable")]
     [SerializeField] private BountyCoin _coinPrefab;
     [SerializeField] private float _bountyRatio;
+    [SerializeField] private int _miniCoinValue;
     private Health _health;
     
     public NetworkVariable<int> totalCoin;
@@ -33,6 +34,7 @@ public class CoinCollector : NetworkBehaviour
 
     private void HandleDieEvent()
     {
+        if (totalCoin.Value < _miniCoinValue) return;
         int bountyValue = Mathf.FloorToInt(totalCoin.Value * _bountyRatio);
 
         float coinScale = Mathf.Clamp(bountyValue / 100f, 1f, 3f);
@@ -53,5 +55,10 @@ public class CoinCollector : NetworkBehaviour
             if (!IsServer) return;
             totalCoin.Value += value;
         }
+    }
+    
+    public void SpendCoin(int value)
+    {
+        totalCoin.Value -= value;
     }
 }

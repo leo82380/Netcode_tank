@@ -1,11 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 using DG.Tweening;
 using Unity.Netcode;
 using UnityEngine;
 
 public class BountyCoin : Coin
 {
+    private CinemachineImpulseSource _impulseSource;
+    
+    protected override void Awake()
+    {
+        base.Awake();
+        _impulseSource = GetComponent<CinemachineImpulseSource>();
+    }
     public override int Collect()
     {
         if (!IsServer)
@@ -39,7 +47,7 @@ public class BountyCoin : Coin
         transform.DOMove(destination, 0.6f).SetEase(Ease.OutBounce).OnComplete
         (() =>
         {
-
+            _impulseSource.GenerateImpulse(0.3f);
         });
     }
 }

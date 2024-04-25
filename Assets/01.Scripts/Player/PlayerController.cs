@@ -14,6 +14,7 @@ public class PlayerController : NetworkBehaviour
     [Header("Reference")] 
     [SerializeField] private CinemachineVirtualCamera _followCam;
     [SerializeField] private TextMeshPro _nameText;
+    [SerializeField] private SpriteRenderer minimapIcon;
     
     [Header("Setting Values")] 
     [SerializeField] private int _ownerCamPriority;
@@ -46,6 +47,7 @@ public class PlayerController : NetworkBehaviour
         if (IsOwner)
         {
             _followCam.Priority = _ownerCamPriority;
+            minimapIcon.color = Color.blue;
         }
 
         if (IsServer)

@@ -10,7 +10,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -1332822876163669271, guid: 8f1ac5f38e016bf4a9b1dafe7642c2ba, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 1162253463
+      value: 454946165
       objectReference: {fileID: 0}
     - target: {fileID: -1332822876163669271, guid: 8f1ac5f38e016bf4a9b1dafe7642c2ba, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
@@ -56,12 +56,94 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5772534479294743243, guid: 8f1ac5f38e016bf4a9b1dafe7642c2ba, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 7bfd0a0977e81b84a8f1d12195e5883a, type: 3}
     - target: {fileID: 7514068279572246313, guid: 8f1ac5f38e016bf4a9b1dafe7642c2ba, type: 3}
       propertyPath: m_Name
-      value: CoinBase Variant
+      value: BountyCoin
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7514068279572246313, guid: 8f1ac5f38e016bf4a9b1dafe7642c2ba, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -4625413935684919396}
+    - targetCorrespondingSourceObject: {fileID: 7514068279572246313, guid: 8f1ac5f38e016bf4a9b1dafe7642c2ba, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 721448707637120629}
   m_SourcePrefab: {fileID: 100100000, guid: 8f1ac5f38e016bf4a9b1dafe7642c2ba, type: 3}
+--- !u!1 &8148577901314630964 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7514068279572246313, guid: 8f1ac5f38e016bf4a9b1dafe7642c2ba, type: 3}
+  m_PrefabInstance: {fileID: 1824737559018457629}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &-4625413935684919396
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8148577901314630964}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60bd753dcd459824eaf3dba99561bcf7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isActive:
+    m_InternalValue: 0
+--- !u!114 &721448707637120629
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8148577901314630964}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 180ecf9b41d478f468eb3e9083753217, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ImpulseDefinition:
+    m_ImpulseChannel: 1
+    m_ImpulseShape: 2
+    m_CustomImpulseShape:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_ImpulseDuration: 0.2
+    m_ImpulseType: 0
+    m_DissipationRate: 0.25
+    m_RawSignal: {fileID: 0}
+    m_AmplitudeGain: 1
+    m_FrequencyGain: 1
+    m_RepeatMode: 0
+    m_Randomize: 1
+    m_TimeEnvelope:
+      m_AttackShape:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      m_DecayShape:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      m_AttackTime: 0
+      m_SustainTime: 0.2
+      m_DecayTime: 0.7
+      m_ScaleWithImpact: 1
+      m_HoldForever: 0
+    m_ImpactRadius: 100
+    m_DirectionMode: 0
+    m_DissipationMode: 2
+    m_DissipationDistance: 100
+    m_PropagationSpeed: 343
+  m_DefaultVelocity: {x: 0, y: -0.5, z: 0}

@@ -8,13 +8,13 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Sun
   - Water
   - UI
   - Projectile
   - PickUp
   - Obstacle
-  - 
+  - Minimap
   - 
   - 
   - 

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Health : NetworkBehaviour
 {
+    [SerializeField] private ParticleSystem _explosionEffect;
     public NetworkVariable<int> currentHealth;
     public int maxHealth;
     
@@ -31,6 +32,12 @@ public class Health : NetworkBehaviour
     
     public override void OnNetworkDespawn()
     {
+        for (int i = 0; i < 4; i++)
+        {
+            Vector2 pos = (Vector2)transform.position + UnityEngine.Random.insideUnitCircle;
+            Instantiate(_explosionEffect, pos, Quaternion.identity);
+        }
+        
         if (IsClient)
         {
             currentHealth.OnValueChanged -= HandleHealthValueChanged;

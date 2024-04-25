@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Unity.Netcode;
@@ -85,18 +86,19 @@ public class GameManager : NetworkBehaviour
         }
     }
 
-    public async void SpawnTank(ulong clientID, Color color,int coin, float delay = 0)
+    public void SpawnTank(ulong clientID, Color color,int coin, float delay = 0)
     {
-        if (delay > 0)
-        {
-            await Task.Delay(Mathf.CeilToInt(delay * 1000));
-        }
+        StartCoroutine(DelayedSpawn(clientID, color,coin, delay));
+    }
+
+    private IEnumerator DelayedSpawn(ulong clientID, Color color,int coin, float delay = 0)
+    {
+        yield return new WaitForSeconds(delay);
         
         Vector3 position = TankSpawnPoint.GetRandomSpawnPos();
         
         PlayerController tank = Instantiate(_playerPrefab, position, Quaternion.identity);
         tank.NetworkObject.SpawnAsPlayerObject(clientID); // 이 클라이언트 아이디가 주인이 됨
         tank.SetTankData(color, coin);
-        
     }
 }
