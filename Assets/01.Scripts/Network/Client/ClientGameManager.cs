@@ -100,6 +100,6 @@ public class ClientGameManager : IDisposable
     
     public void Disconnect()
     {
-        NetClient?.Dispose();
+        NetClient?.Disconnect();
     }
 }

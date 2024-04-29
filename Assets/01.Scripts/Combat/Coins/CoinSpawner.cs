@@ -76,7 +76,7 @@ public class CoinSpawner : NetworkBehaviour
         if (IsServer == false) return;
         
         // 나중에 여기에 게임이 시작되었을 때만 코인이 생성되게 변경해야함
-
+        if (GameManager.Instance.IsGameStarted == false) return;
         if (_isSpawning == false && _activeCoinList.Count == 0)
         {
             _spawnTime += Time.deltaTime;
@@ -125,13 +125,21 @@ public class CoinSpawner : NetworkBehaviour
     
     [ClientRpc]
     private void CountDownClientRpc(int sec, int pointIndex, int coinCount)
-    { SpawnPoint point = spawnPointList[pointIndex];
+    { 
+        SpawnPoint point = spawnPointList[pointIndex];
         
         if (_decalCircle.showDecal == false)
         {
             _decalCircle.OpenCircle(point.Position, point.Radius);
         }
-        Debug.Log($"{point.pointName}쪽 지점에서 {sec}초후 {coinCount}개의 코인이 생성됩니다.");
+
+        if (sec <= 1)
+        {
+            _decalCircle.StopBlinkIcon();
+        }
+        MessageSystem.Instance.ShowText(
+            $"{point.pointName}쪽 지점에서 {sec}초후 {coinCount}개의 코인이 생성됩니다.", 
+            0.8f);
     }
     
     [ClientRpc]

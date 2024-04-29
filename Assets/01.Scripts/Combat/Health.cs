@@ -49,9 +49,17 @@ public class Health : NetworkBehaviour
         return (float)currentHealth.Value / maxHealth;
     }
 
-    private void HandleHealthValueChanged(int previousvalue, int newvalue)
+    private void HandleHealthValueChanged(int previousValue, int newValue)
     {
         OnHealthChangedEvent?.Invoke();
+        
+        int delta = newValue - previousValue;
+        int value = Mathf.Abs(delta);
+        
+        if (value == maxHealth) return;
+        
+        Color textColor = delta < 0 ? Color.red : Color.green;
+        TextManager.Instance.PopUpText(value.ToString(), transform.position, textColor);
     }
 
     // 서버만 실행

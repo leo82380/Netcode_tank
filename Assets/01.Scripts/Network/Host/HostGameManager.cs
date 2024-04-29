@@ -21,7 +21,7 @@ public class HostGameManager : IDisposable
     
     public NetworkServer NetServer { get; private set; }
 
-    private void MakeNetworkserver()
+    private void MakeNetworkServer()
     {
         NetServer = new NetworkServer(NetworkManager.Singleton);
     }
@@ -86,7 +86,9 @@ public class HostGameManager : IDisposable
             return;
         }
         
-        MakeNetworkserver();
+        MakeNetworkServer();
+        
+        NetServer.OnClientLeft += HandleClientLeft;
         
         ClientSingleton.Instance.GameManager.SetPayloadData();
         
@@ -96,7 +98,21 @@ public class HostGameManager : IDisposable
                 SceneNames.GameScene, LoadSceneMode.Single);
         }
     }
-    
+
+    private async void HandleClientLeft(string authID)
+    {
+        if (_lobbyId == null) return;
+
+        try
+        {
+            await LobbyService.Instance.RemovePlayerAsync(_lobbyId, authID);
+        }
+        catch (LobbyServiceException ex)
+        {
+            Debug.LogError(ex);
+        }
+    }
+
     private IEnumerator HeartBeatLobby(float waitTime)
     {
         var timer = new WaitForSecondsRealtime(waitTime);
@@ -109,7 +125,7 @@ public class HostGameManager : IDisposable
 
     public bool StartHostLocalNetwork()
     {
-        MakeNetworkserver();
+        MakeNetworkServer();
         ClientSingleton.Instance.GameManager.SetPayloadData();
         if (NetworkManager.Singleton.StartHost())
         {
@@ -129,7 +145,7 @@ public class HostGameManager : IDisposable
         Shutdown();
     }
 
-    private async Task Shutdown()
+    public async void Shutdown()
     {
         HostSingleton.Instance.StopAllCoroutines();
         
@@ -144,7 +160,7 @@ public class HostGameManager : IDisposable
                 Debug.LogError(ex);
             }
         }
-        
+        NetServer.OnClientLeft -= HandleClientLeft;
         _lobbyId = string.Empty;
         NetServer?.Dispose();
     }

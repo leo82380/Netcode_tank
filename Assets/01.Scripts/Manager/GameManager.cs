@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -14,6 +15,7 @@ public class GameManager : NetworkBehaviour
     
     private TankSelectPanel _tankSelectPanel;
     private Dictionary<ulong, PlayerController> _playerDictionary;
+    public bool IsGameStarted { get; private set; }
     
     public void Awake()
     {
@@ -83,6 +85,7 @@ public class GameManager : NetworkBehaviour
             ulong clientID = ui.OwnerClientId;
             Color color = ui.selectedColor.Value;
             SpawnTank(clientID, color, 0);
+            IsGameStarted = true;
         }
     }
 
