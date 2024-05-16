@@ -78,11 +78,22 @@ public class Health : NetworkBehaviour
 
     public void TakeDamage(int damageValue)
     {
+        if (MapManager.Instance.IsInSafetyZone(transform.position))
+        {
+            SetInvincibleClientRpc("무적", Color.white);
+            return;
+        }
         ModifyHealth(-damageValue);
     }
     
     public void RestoreHealth(int restoreValue)
     {
         ModifyHealth(restoreValue);
+    }
+    
+    [ClientRpc]
+    public void SetInvincibleClientRpc(string text, Color color)
+    {
+        TextManager.Instance.PopUpText(text, transform.position, color);
     }
 }

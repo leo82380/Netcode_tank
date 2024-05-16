@@ -5,6 +5,7 @@ public class PlayerInput : MonoBehaviour
 {
     public event Action<Vector2> OnMovementEvent;
     public event Action OnFireEvent;
+    public event Action OnShopKeyEvent; 
     public Vector2 AimPosition { get; private set; }
 
     private void Update()
@@ -12,6 +13,15 @@ public class PlayerInput : MonoBehaviour
         CheckMovementInput();
         CheckFireInput();
         CheckMousePosition();
+        CheckShopKeyInput();
+    }
+
+    private void CheckShopKeyInput()
+    {
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            OnShopKeyEvent?.Invoke();
+        }
     }
 
     private void CheckMousePosition()

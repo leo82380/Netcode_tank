@@ -25,8 +25,12 @@ public class PlayerController : NetworkBehaviour
     public PlayerMovement MovementCompo { get; private set; }
     public Health HealthCompo { get; private set; }
     public CoinCollector CoinCompo { get; private set; }
+    public ProjectileLauncher LauncherCompo { get; private set; }
     
     public NetworkVariable<FixedString32Bytes> playerName;
+
+    public ShopNPC shopNpc;
+    private PlayerInput _playerInput;
 
     private void Awake()
     {
@@ -37,6 +41,8 @@ public class PlayerController : NetworkBehaviour
         MovementCompo = GetComponent<PlayerMovement>();
         HealthCompo = GetComponent<Health>();
         CoinCompo = GetComponent<CoinCollector>();
+        _playerInput = GetComponent<PlayerInput>();
+        LauncherCompo = GetComponent<ProjectileLauncher>();
     }
 
     public override void OnNetworkSpawn()
@@ -48,6 +54,7 @@ public class PlayerController : NetworkBehaviour
         {
             _followCam.Priority = _ownerCamPriority;
             minimapIcon.color = Color.blue;
+            _playerInput.OnShopKeyEvent += HandleShopKeyEvent;
         }
 
         if (IsServer)
@@ -71,9 +78,21 @@ public class PlayerController : NetworkBehaviour
         tankColor.OnValueChanged -= HandleColorChanged;
         playerName.OnValueChanged -= HandlePlayerNameChanged;
         
+        if (IsOwner)
+        {
+            _playerInput.OnShopKeyEvent -= HandleShopKeyEvent;
+        }
+        
         OnPlayerDespawn?.Invoke(this);
     }
-    
+
+    private void HandleShopKeyEvent()
+    {
+        if (shopNpc == null) return;
+        
+        shopNpc.OpenShop(this);
+    }
+
     private void HandleColorChanged(Color previousvalue, Color newvalue)
     {
         VisualCompo.SetTintColor(newvalue);
@@ -85,4 +104,16 @@ public class PlayerController : NetworkBehaviour
         tankColor.Value = color;
     }
     #endregion
+
+    [ClientRpc]
+    public void AddDamageToLauncherClientRpc(int upgradeValue)
+    {
+        LauncherCompo.damage += upgradeValue;
+    }
+
+    [ClientRpc]
+    public void AddHPClientRpc(int upgradeValue)
+    {
+        HealthCompo.maxHealth += upgradeValue;
+    }
 }
